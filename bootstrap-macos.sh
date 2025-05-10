@@ -1,93 +1,90 @@
 #!/usr/bin/env bash
 
-set -e
+# set -e
 
-echo "Setting things up in $(uname -s)..."
+log() {
+    local color_code="\033[0;34m"
+    local reset="\033[0m"
+
+    # Add color based on severity
+    if [[ "$1" == "error" ]]; then
+        color_code="\033[0;31m"
+    elif [[ "$1" == "warn" ]]; then
+        color_code="\033[0;33m"
+    elif [[ "$1" == "success" ]]; then
+        color_code="\033[0;32m"
+    fi
+
+    # Print the log message with color
+    printf "${color_code}[$(echo "$1" | tr '[:lower:]' '[:upper:]')] %s${reset}\n" "${*:2}"
+}
+
+log info "OS implementation: $(uname -s)"
+
+log info "Trying to set up the dotfiles repository"
 
 # Set up the dotfiles repository
 DOTFILES_DIR="$HOME/dotfiles"
 
 if [ ! -d "$DOTFILES_DIR" ]; then
-    echo "Cloning the repository since it's missing..."
+    log info "Cloning the repository since it's missing..."
     git clone https://github.com/sharavananpa/dotfiles.git "$DOTFILES_DIR"
 else
-    echo "Repository already exists!"
+    log warn "Repository already exists!"
 fi
 
-echo "Changing directory to $DOTFILES_DIR"
+printf "\n"
+
+# Change directory to dotfiles repository
+log info "Changing directory to " "$DOTFILES_DIR"
 cd $DOTFILES_DIR
 
-echo "Pulling latest changes"
-git pull --rebase --autostash
+printf "\n"
 
 # Set up Homebrew
+log info "Pulling latest changes and installing packages..."
+git pull --rebase --autostash
+
 if command -v brew >/dev/null 2>&1; then
-    echo "Homebrew is already installed!"
+    log warn "Homebrew is already installed!"
 else
-    echo "Installing Homebrew to help manage packages..."
+    log info "Installing homebrew to help manage packages..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-# echo "Installing brew packages..."
-# brew bundle --file ./brew/Brewfile
+log info "Installing brew packages..."
+brew bundle --file ./brew/Brewfile
+
+printf "\n"
 
 # Set up config files
-echo "Removing stupid .DS_Store files (just in case)..."
+log warn "Removing stupid .DS_Store files (just in case)..."
 find . -name ".DS_Store" -exec rm -f {} \;
 
-echo "Creating symlinks for config files..."
+printf "\n"
+
+log info "Creating symlinks for config files..."
 stow brew git nvim zsh
 
 # Set up mac settings using defaults write
-read -p "Run defaults command to change mac settings?" changeSettings
+read -p "Run defaults command to change mac settings? (y/N) " changeSettings
 
-case ${changeSettings,,} in
+case $(echo "$changeSettings" | tr '[:upper:]' '[:lower:]') in
     y | yes)
-        echo "Changing settings..."
-        # Dock
-        defaults write com.apple.dock "tilesize" -int "48"
-        defaults write com.apple.dock "show-recents" -bool "false"
-
-        defaults write com.apple.dock wvous-bl-corner -int 0
-        defaults write com.apple.dock wvous-bl-modifier -int 0
-
-        defaults write com.apple.dock wvous-br-corner -int 0
-        defaults write com.apple.dock wvous-br-modifier -int 0
-
-        defaults write com.apple.dock wvous-tl-corner -int 0
-        defaults write com.apple.dock wvous-tl-modifier -int 0
-
-        defaults write com.apple.dock wvous-tr-corner -int 0
-        defaults write com.apple.dock wvous-tr-modifier -int 0
-
-        killall Dock
-
-        # Safari
-        defaults write com.apple.Safari "ShowFullURLInSmartSearchField" -bool "true"
-        defaults write com.apple.Safari HomePage -string "https://sharavananpa.dev"
-        defaults write com.apple.Safari ShowStatusBar -bool "true"
-
-        killall Safari
-
-        # Finder
-        defaults write NSGlobalDomain "AppleShowAllExtensions" -bool "true"
-
-        defaults write com.apple.finder "AppleShowAllFiles" -bool "true"
-        defaults write com.apple.finder "ShowPathbar" -bool "true"
-        defaults write com.apple.finder "FXPreferredViewStyle" -string "Nlsv"
-        defaults write com.apple.finder "_FXSortFoldersFirst" -bool "true"
-
-        killall Finder
-
-        # Keyboard
-        defaults write NSGlobalDomain "ApplePressAndHoldEnabled" -bool "false"
-        defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool "false"
-        defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool "false"
-
-        # TextEdit
-        defaults write com.apple.TextEdit "RichText" -bool "false" && killall TextEdit
+        log info "Changing settings..."
+        ./scripts/macos/change-defaults.sh
         ;;
     *)
-        echo "Not changing settings!"
+        log warn "Not changing settings!"
         ;;
 esac
+
+printf "\n*****\n\n"
+printf "You still might want to change the following settings manually...\n"
+printf "1. Disable AI\n"
+printf "2. Add/Remove login items\n"
+printf "3. Finder preferences\n"
+printf "4. Change lock screen settings\n"
+printf "5. Set up Google account for mail\n"
+printf "6. Change wallpaper\n"
+printf "\n*****\n"
