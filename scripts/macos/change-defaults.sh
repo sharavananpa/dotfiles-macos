@@ -66,4 +66,6 @@ defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
 
 defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
 
+defaults write NSGlobalDomain AppleICUForce24HourTime -bool true
+
 killall SystemUIServer 2>/dev/null || true

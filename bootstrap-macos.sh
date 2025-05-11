@@ -50,6 +50,7 @@ if command -v brew >/dev/null 2>&1; then
 else
     log info "Installing homebrew to help manage packages..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 log info "Installing brew packages..."
@@ -87,4 +88,7 @@ printf "3. Finder preferences\n"
 printf "4. Change lock screen settings\n"
 printf "5. Set up Google account for mail\n"
 printf "6. Change wallpaper\n"
+printf "7. Tweak Dock preferences\n"
+printf "8. Configure iCloud\n"
+printf "9. Set up Safari\n"
 printf "\n*****\n"
