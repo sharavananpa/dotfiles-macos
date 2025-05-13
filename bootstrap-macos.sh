@@ -65,6 +65,7 @@ find . -name ".DS_Store" -exec rm -f {} \;
 printf "\n"
 
 log info "Creating symlinks for config files..."
+mkdir -p ~/.config
 stow brew git nvim zsh
 
 # Set up mac settings using defaults write
