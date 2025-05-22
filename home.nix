@@ -26,6 +26,7 @@
     fd
     btop
     nerd-fonts.jetbrains-mono
+    sdcv
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -55,6 +56,10 @@
     #   org.gradle.daemon.idletimeout=3600000
     # '';
 
+    ".config/stardict/dic" = {
+	source = ./stardict;
+	recursive = true;
+    };
     ".config/starship.toml".source = ./dotfiles/starship/.config/starship.toml;
   };
 
@@ -76,6 +81,7 @@
   #
   home.sessionVariables = {
     # EDITOR = "emacs";
+    STARDICT_DATA_DIR = "$HOME/.config/stardict";
   };
 
   # Let Home Manager install and manage itself.
