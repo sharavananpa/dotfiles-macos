@@ -21,6 +21,8 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+	
+    #self.submodules = true;
   };
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, nix-homebrew, homebrew-cask }:

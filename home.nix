@@ -18,6 +18,7 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
+    neovim
     tealdeer
     starship
     eza
@@ -27,6 +28,7 @@
     btop
     nerd-fonts.jetbrains-mono
     sdcv
+    stow
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -58,13 +60,9 @@
 
     ".config/stardict/dic" = {
 	    source = ./stardict;
-	    recursive = true;
+	    #recursive = true;
     };
     ".config/starship.toml".source = ./dotfiles/starship/.config/starship.toml;
-    ".config/nvim" = {
-        source = ./dotfiles/nvim/.config/nvim;
-        recursive = true;
-    };
   };
 
   # Home Manager can also manage your environment variables through
@@ -84,17 +82,12 @@
   #  /etc/profiles/per-user/shar/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    EDITOR = "nvim";
     STARDICT_DATA_DIR = "$HOME/.config/stardict";
   };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-  
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-  };
 
   programs.zsh = {
     enable = true;
@@ -130,6 +123,13 @@
       la = "eza -lahF --git";
       lt = "eza -l --tree --git";
       lat = "eza -la --tree --git";
+
+      gs = "git status";
+      gd = "git diff";
+      gc = "git commit";
+      gco = "git checkout";
+      gp = "git push";
+      gl = "git log --oneline --graph --decorate";
       
       c = "clear";
       h = "history";
@@ -172,14 +172,6 @@
 
   programs.git = {
     enable = true;
-    aliases = {
-      gs = "git status";
-      gd = "git diff";
-      gc = "git commit";
-      gco = "git checkout";
-      gp = "git push";
-      gl = "git log --oneline --graph --decorate";
-    };
     userEmail = "sharavananpa@gmail.com";
     userName = "Sharavanan Balasundaravel";
     delta.enable = true;
