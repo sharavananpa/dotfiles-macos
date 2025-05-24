@@ -57,10 +57,14 @@
     # '';
 
     ".config/stardict/dic" = {
-	source = ./stardict;
-	recursive = true;
+	    source = ./stardict;
+	    recursive = true;
     };
     ".config/starship.toml".source = ./dotfiles/starship/.config/starship.toml;
+    ".config/nvim" = {
+        source = ./dotfiles/nvim/.config/nvim;
+        recursive = true;
+    };
   };
 
   # Home Manager can also manage your environment variables through
@@ -127,13 +131,6 @@
       lt = "eza -l --tree --git";
       lat = "eza -la --tree --git";
       
-      gs = "git status";
-      gd = "git diff";
-      gc = "git commit";
-      gco = "git checkout";
-      gp = "git push";
-      gl = "git log --oneline --graph --decorate";
-
       c = "clear";
       h = "history";
       please = "sudo";
@@ -171,5 +168,20 @@
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
+  };
+
+  programs.git = {
+    enable = true;
+    aliases = {
+      gs = "git status";
+      gd = "git diff";
+      gc = "git commit";
+      gco = "git checkout";
+      gp = "git push";
+      gl = "git log --oneline --graph --decorate";
+    };
+    userEmail = "sharavananpa@gmail.com";
+    userName = "Sharavanan Balasundaravel";
+    delta.enable = true;
   };
 }

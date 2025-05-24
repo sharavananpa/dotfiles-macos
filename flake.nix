@@ -35,6 +35,7 @@
         enable = true;
         casks = [
           "kitty"
+          "excalidrawz"
         ];
         taps = [
           "homebrew/homebrew-cask"
