@@ -29,6 +29,7 @@
     nerd-fonts.jetbrains-mono
     sdcv
     stow
+    maven
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the

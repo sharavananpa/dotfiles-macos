@@ -21,6 +21,7 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+    
 	
     #self.submodules = true;
   };
@@ -38,6 +39,14 @@
         casks = [
           "kitty"
           "excalidrawz"
+	  "anydesk"
+	  "cloudflare-warp"
+	  "obs"
+	  "libndi"
+	  "utm"
+	  "zoom"
+	  "intellij-idea-ce"
+	  "pgadmin4"
         ];
         taps = [
           "homebrew/homebrew-cask"
