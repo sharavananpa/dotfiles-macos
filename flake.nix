@@ -47,6 +47,7 @@
 	  "zoom"
 	  "intellij-idea-ce"
 	  "pgadmin4"
+	  "balenaetcher"
         ];
         taps = [
           "homebrew/homebrew-cask"
